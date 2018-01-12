@@ -1,0 +1,33 @@
+
+ <% obj.each do |i| %>
+ <div class="row">
+   <div class="col-xs-8 col-xs-offset-2">
+     <div class="well well-lg">
+       <div class="article-title">
+         <%= link_to i.title,article_path(i)%>
+       </div>
+       <div class="article-meta-details">
+         <small>
+           Created by:<%=i.user.username if i.user%>
+           <%=time_ago_in_words(i.created_at)%>ago
+           Last updated <%=time_ago_in_words(i.updated_at)%>ago
+         </small>
+       </div>
+       <div class="article-body">
+ 	     <%= truncate(i.description,length:100) %>
+       </div>
+       <% if i.categories.any? %>
+        <p><%= render i.categories%></p>
+       <% end %>
+
+       <% if logged_in? and current_user==i.user ||current_user.admin? %>
+         <div class="article_actions">
+           <%= link_to "Edit article here",edit_article_path(i),class:"btn btn-xs btn-primary"%>
+	       <%= link_to "Delete article",article_path(i), method: :delete,data: {confirm: "Are you sure?"},class:"btn btn-xs btn-danger"%>
+          </div>
+        <%end%>
+      </div>
+    </div>
+   </div>
+ <% end %>
+
